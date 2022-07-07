@@ -36,7 +36,12 @@ RUN apk add --update --no-cache php8 \
   php8-xmlwriter \
   php8-xmlreader \
   php8-sockets \
+  postgresql-client \
+  php8-pdo_pgsql \
+  php8-pgsql \
   nodejs \
+  mysql-client \
+  php8-pdo_mysql\
   npm
 
 RUN rm -rf /var/cache/apk/*

@@ -11,12 +11,13 @@ __Versions__
 * Node : 16.14.2
 * NPM : 8.1.3
 * Squoosh-cli : 0.7.2
+* PostreSQL-client : 14.4
+* MySQL-client : 10.6
 
 __VARS defined :__
 * APP_ENV : prod or dev
 * APP_DEBUG : true or false
 * XDEBUG -> to active php module
-* APP_ENV
 
 ## Commit Messages
 
