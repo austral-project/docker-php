@@ -40,9 +40,9 @@ RUN apk add --update --no-cache php8 \
   postgresql-client \
   php8-pdo_pgsql \
   php8-pgsql \
+  php8-pdo_mysql\
   nodejs \
   mysql-client \
-  php8-pdo_mysql\
   npm
 
 RUN rm -rf /var/cache/apk/*
