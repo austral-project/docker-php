@@ -42,6 +42,7 @@ RUN apk add --update --no-cache php8 \
   php8-pgsql \
   php8-pdo_mysql\
   php8-pcntl \
+  php8-exif \
   nodejs \
   mysql-client \
   npm
