@@ -1,6 +1,7 @@
 FROM australproject/alpine:3.15
 LABEL maintainer="Matthieu Beurel <matthieu@austral.dev>"
 
+RUN apk update && apk upgrade
 RUN apk add --update --no-cache php8 \
   php8-pecl-redis \
   php8-common \
