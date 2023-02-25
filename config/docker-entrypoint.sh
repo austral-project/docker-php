@@ -6,19 +6,24 @@ fi
 chown -R www-data:www-data /home/www-data/website/var
 
 #### Init var APP_ENV if not defined or is empty
-if [[ -z "${APP_ENV+x}" ]]; then
+if [ -z "${APP_ENV+x}" ]; then
   APP_ENV="prod"
+fi
+if [ -z "${APP_DEBUG+x}" ]; then
+  APP_DEBUG=0
 fi
 
 #### Init var XDEBUG if not defined or is empty
-if [[ -z ${XDEBUG+x} ]]; then
+if [ -z ${XDEBUG+x} ]; then
   XDEBUG=false
 fi
 
 echo "App environnement : ${APP_ENV}"
-if [[ "${APP_ENV}" = "prod" ]]; then
+echo "App debug : ${APP_DEBUG}"
+
+if [ "${APP_DEBUG}" = "0" ]; then
   ERROR_REPORTING="E_ALL & ~E_DEPRECATED & ~E_STRICT"
-  DISPLAY_ERROR="On"
+  DISPLAY_ERROR="Off"
 else
   ERROR_REPORTING="E_ALL"
   DISPLAY_ERROR="On"
@@ -28,6 +33,7 @@ echo "Error reporting : ${ERROR_REPORTING}"
 echo "Display error : ${DISPLAY_ERROR}"
 
 export APP_ENV
+export APP_DEBUG
 export XDEBUG
 export ERROR_REPORTING
 export DISPLAY_ERROR
@@ -35,7 +41,7 @@ export DISPLAY_ERROR
 envsubst '${ERROR_REPORTING} ${DISPLAY_ERROR}' < /etc/php8/php.ini.conf > /etc/php8/php.ini
 
 echo "Xdebug enabled ? : ${XDEBUG}"
-if [[ "${XDEBUG}" = 1 ]]
+if [ "${XDEBUG}" = 1 ]
 then
   echo "Install XDEBUG"
   apk add php8-xdebug
