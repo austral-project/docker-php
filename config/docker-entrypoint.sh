@@ -38,7 +38,7 @@ export XDEBUG
 export ERROR_REPORTING
 export DISPLAY_ERROR
 
-if [ -z "${MY_PHP_CONFIG+x}" ]; then
+if [ ! -f /etc/php8/php.ini ]; then
 envsubst '${ERROR_REPORTING} ${DISPLAY_ERROR}' < /etc/php8/php.ini.conf > /etc/php8/php.ini
 fi
 
