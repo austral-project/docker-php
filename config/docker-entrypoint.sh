@@ -38,8 +38,12 @@ export XDEBUG
 export ERROR_REPORTING
 export DISPLAY_ERROR
 
-if [ ! -f /etc/php8/php.ini ]; then
-envsubst '${ERROR_REPORTING} ${DISPLAY_ERROR}' < /etc/php8/php.ini.conf > /etc/php8/php.ini
+if test -f /etc/php8/php.ini
+then
+  echo "php.ini exist"
+else
+  echo "Generate php.ini"
+  envsubst '${ERROR_REPORTING} ${DISPLAY_ERROR}' < /etc/php8/php.ini.conf > /etc/php8/php.ini
 fi
 
 echo "Xdebug enabled ? : ${XDEBUG}"
