@@ -1,6 +1,8 @@
 FROM australproject/alpine:3.17
 LABEL maintainer="Matthieu Beurel <matthieu@austral.dev>"
 
+ENV SCRIPT_AUTO=1
+
 RUN apk update && apk upgrade
 RUN apk add --update --no-cache php81 \
   php81-pecl-redis \
@@ -65,7 +67,6 @@ COPY config/www.conf /etc/php81/fpm/pool.d/www.conf
 COPY config/php-fpm.conf /etc/php81/php-fpm.conf
 COPY config/php.ini.conf /etc/php81/php.ini.conf
 RUN rm /etc/php81/php.ini
-
 
 COPY config/docker-entrypoint.sh /
 RUN chmod -R 755 docker-entrypoint.sh

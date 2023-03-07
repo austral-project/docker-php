@@ -21,6 +21,9 @@ __VARS defined :__
 * APP_DEBUG : true or false
 * XDEBUG -> to active php module
 
+__Script Auto__
+* add run.sh file in path project -> script-auto/run.sh
+
 ## Commit Messages
 
 The commit message must follow the [Conventional Commits specification](https://www.conventionalcommits.org/).

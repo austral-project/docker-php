@@ -38,6 +38,17 @@ export XDEBUG
 export ERROR_REPORTING
 export DISPLAY_ERROR
 
+if [ "${SCRIPT_AUTO}" = "1" ]; then
+  if test -f /home/www-data/website/script-auto/run.sh
+  then
+    echo "Start script auto"
+    chmod +x /home/www-data/website/script-auto/run.sh
+    su -c "/bin/bash /home/www-data/website/script-auto/run.sh" www-data
+  else
+    echo "No script auto detected"
+  fi
+fi
+
 if test -f /etc/php81/php.ini
 then
   echo "php.ini exist"
