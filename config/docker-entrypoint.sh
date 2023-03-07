@@ -38,19 +38,19 @@ export XDEBUG
 export ERROR_REPORTING
 export DISPLAY_ERROR
 
-if test -f /etc/php8/php.ini
+if test -f /etc/php81/php.ini
 then
   echo "php.ini exist"
 else
   echo "Generate php.ini"
-  envsubst '${ERROR_REPORTING} ${DISPLAY_ERROR}' < /etc/php8/php.ini.conf > /etc/php8/php.ini
+  envsubst '${ERROR_REPORTING} ${DISPLAY_ERROR}' < /etc/php81/php.ini.conf > /etc/php81/php.ini
 fi
 
 echo "Xdebug enabled ? : ${XDEBUG}"
 if [ "${XDEBUG}" = 1 ]
 then
   echo "Install XDEBUG"
-  apk add php8-xdebug
+  apk add php81-xdebug
   printf "\n\
 [xdebug] \n\
   zend_extension=xdebug.so \n\
@@ -76,7 +76,7 @@ then
   ; xdebug.scream=On \n\
   ; xdebug.halt_level=E_WARNING|E_NOTICE|E_USER_WARNING|E_USER_NOTICE \n\
   xdebug.output_dir=/home/www-data/website/var/docker-log/xdebug/ \n\
-  " >> /etc/php8/php.ini;
+  " >> /etc/php81/php.ini;
 fi
 
 

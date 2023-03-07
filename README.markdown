@@ -1,20 +1,20 @@
 # Austral Docker PHP 8.0
 
 [![License](https://img.shields.io/github/license/austral-project/docker-php)](https://img.shields.io/github/license/austral-project/docker-php)
-[![Docker Image Version (tag latest semver)](https://img.shields.io/docker/v/australproject/php/8.0)](https://img.shields.io/docker/v/australproject/php/8.0)
+[![Docker Image Version (tag latest semver)](https://img.shields.io/docker/v/australproject/php/8.1)](https://img.shields.io/docker/v/australproject/php/8.1)
 [![Docker Automated build](https://img.shields.io/docker/automated/australproject/php)](https://img.shields.io/docker/automated/australproject/php)
 [![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/australproject/php)](https://img.shields.io/docker/cloud/build/australproject/php)
 [![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/australproject/php)](https://img.shields.io/docker/image-size/australproject/php)
 
-View repository for the base image Alpine 3.15 : [Docker Hub](https://hub.docker.com/r/australproject/alpine/) or [Gitub](https://github.com/austral-project/docker-alpine)
+View repository for the base image Alpine 3.17 : [Docker Hub](https://hub.docker.com/r/australproject/alpine/) or [Gitub](https://github.com/austral-project/docker-alpine)
 
 __Versions__
-* PHP : 8.0.18
-* Node : 16.14.2
-* NPM : 8.1.3
+* PHP : 8.1.16
+* Node : 18.14.2
+* NPM : 9.1.2
 * Squoosh-cli : 0.7.2
-* PostgreSQL-client : 14.4
-* MySQL-client : 10.6
+* PostgreSQL-client : 15.2
+* MySQL-client : 10.6.12
 
 __VARS defined :__
 * APP_ENV : prod or dev
