@@ -1,4 +1,4 @@
-# Austral Docker PHP 8.0
+# Austral Docker PHP 8.1
 
 [![License](https://img.shields.io/github/license/austral-project/docker-php)](https://img.shields.io/github/license/austral-project/docker-php)
 [![Docker Image Version (tag latest semver)](https://img.shields.io/docker/v/australproject/php/8.1)](https://img.shields.io/docker/v/australproject/php/8.1)
