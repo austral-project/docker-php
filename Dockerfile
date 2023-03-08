@@ -50,6 +50,7 @@ RUN apk add --update --no-cache php81 \
   nodejs \
   npm
 
+RUN export NODE_OPTIONS=--openssl-legacy-provider
 RUN rm -rf /var/cache/apk/*
 
 # Install npm and squoosh-cli
