@@ -46,9 +46,10 @@ RUN apk add --update --no-cache php81 \
   php81-pcntl \
   php81-exif \
   postgresql15-client \
-  mysql-client \
-  nodejs \
-  npm
+  mysql-client
+
+RUN apk add --update --no-cache nodejs=16.20.0-r0 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.15/main  \
+  npm=8.1.3-r0 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.15/main
 
 RUN export NODE_OPTIONS=--openssl-legacy-provider
 RUN rm -rf /var/cache/apk/*
