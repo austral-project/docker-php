@@ -19,6 +19,7 @@ RUN apk add --update --no-cache php81 \
   php81-json \
   php81-curl \
   php81-sodium \
+  php81-soap \
   php81-fpm \
   php81-gd \
   php81-gmp \
