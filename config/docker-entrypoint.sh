@@ -24,26 +24,30 @@ echo "App debug : ${APP_DEBUG}"
 if [ "${APP_DEBUG}" = "0" ]; then
   ERROR_REPORTING="E_ALL & ~E_DEPRECATED & ~E_STRICT"
   DISPLAY_ERROR="Off"
+  OPCACHE_VALIDATE_TIMESTAMPS="0"
 else
   ERROR_REPORTING="E_ALL"
   DISPLAY_ERROR="On"
+  OPCACHE_VALIDATE_TIMESTAMPS="1"
 fi
 
 echo "Error reporting : ${ERROR_REPORTING}"
 echo "Display error : ${DISPLAY_ERROR}"
+echo "Opcache Validate timestamps : ${OPCACHE_VALIDATE_TIMESTAMPS}"
 
 export APP_ENV
 export APP_DEBUG
 export XDEBUG
 export ERROR_REPORTING
 export DISPLAY_ERROR
+export OPCACHE_VALIDATE_TIMESTAMPS
 
 if test -f /etc/php81/php.ini
 then
   echo "php.ini exist"
 else
   echo "Generate php.ini"
-  envsubst '${ERROR_REPORTING} ${DISPLAY_ERROR}' < /etc/php81/php.ini.conf > /etc/php81/php.ini
+  envsubst '${ERROR_REPORTING} ${DISPLAY_ERROR} {OPCACHE_VALIDATE_TIMESTAMPS}' < /etc/php81/php.ini.conf > /etc/php81/php.ini
 fi
 
 echo "Xdebug enabled ? : ${XDEBUG}"
