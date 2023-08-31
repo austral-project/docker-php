@@ -10,7 +10,7 @@ if [ -z "${APP_ENV+x}" ]; then
   APP_ENV="prod"
 fi
 if [ -z "${APP_DEBUG+x}" ]; then
-  APP_DEBUG=0
+  APP_DEBUG=false
 fi
 
 #### Init var XDEBUG if not defined or is empty
@@ -21,7 +21,7 @@ fi
 echo "App environnement : ${APP_ENV}"
 echo "App debug : ${APP_DEBUG}"
 
-if [ "${APP_DEBUG}" = "0" ]; then
+if [ "${APP_DEBUG}" = "false" ]; then
   ERROR_REPORTING="E_ALL & ~E_DEPRECATED & ~E_STRICT"
   DISPLAY_ERROR="Off"
   OPCACHE_VALIDATE_TIMESTAMPS="0"
