@@ -35,9 +35,49 @@ echo "Error reporting : ${ERROR_REPORTING}"
 echo "Display error : ${DISPLAY_ERROR}"
 echo "Opcache Validate timestamps : ${OPCACHE_VALIDATE_TIMESTAMPS}"
 
+echo "Xdebug enabled ? : ${XDEBUG}"
+XDEBUG_VALUES=""
+if [ "${XDEBUG}" = 1 ]
+then
+  if [ ! -d "/home/www-data/website/var/docker-log/xdebug/" ]; then
+    mkdir -p /home/www-data/website/var/docker-log/xdebug
+  fi
+
+  echo "Install XDEBUG"
+  apk add php81-xdebug php81-dev
+  XDEBUG_VALUES="
+[xdebug]
+zend_extension=xdebug.so
+xdebug.start_with_request=On
+xdebug.discover_client_host=On
+xdebug.mode=develop,debug,profile,trace
+xdebug.client_port=9000
+xdebug.max_nesting_level=500
+xdebug.client_enable=On
+xdebug.profiler_append=On
+xdebug.log=/home/www-data/website/var/log/xdebug.log
+; xdebug.log_level=10
+xdebug.log_level=7
+xdebug.idekey=PHPSTORM
+;xdebug.show_error_trace=On
+; xdebug.show_exception_trace=On
+; xdebug.show_local_vars=1
+;xdebug.trace_format=2
+;xdebug.trace_options=1
+;xdebug.collect_return=1
+;xdebug.collect_assignments=On
+; xdebug.force_display_errors=On
+; xdebug.scream=On
+; xdebug.halt_level=E_WARNING|E_NOTICE|E_USER_WARNING|E_USER_NOTICE
+xdebug.output_dir=/home/www-data/website/var/docker-log/xdebug/
+";
+fi
+
+
 export APP_ENV
 export APP_DEBUG
 export XDEBUG
+export XDEBUG_VALUES
 export ERROR_REPORTING
 export DISPLAY_ERROR
 export OPCACHE_VALIDATE_TIMESTAMPS
@@ -47,40 +87,7 @@ then
   echo "php.ini exist"
 else
   echo "Generate php.ini"
-  envsubst '${ERROR_REPORTING} ${DISPLAY_ERROR} {OPCACHE_VALIDATE_TIMESTAMPS}' < /etc/php81/php.ini.conf > /etc/php81/php.ini
-fi
-
-echo "Xdebug enabled ? : ${XDEBUG}"
-if [ "${XDEBUG}" = 1 ]
-then
-  echo "Install XDEBUG"
-  apk add php81-xdebug
-  printf "\n\
-[xdebug] \n\
-  zend_extension=xdebug.so \n\
-  xdebug.start_with_request=On \n\
-  xdebug.discover_client_host=On \n\
-  xdebug.mode=develop,debug,profile,trace \n\
-  xdebug.client_port=9000 \n\
-  xdebug.max_nesting_level=500 \n\
-  xdebug.client_enable=On \n\
-  xdebug.profiler_append=On \n\
-  xdebug.log=/home/www-data/website/var/log/xdebug.log \n\
-  ; xdebug.log_level=10 \n\
-  xdebug.log_level=7 \n\
-  xdebug.idekey=PHPSTORM \n\
-  xdebug.show_error_trace=On \n\
-  ; xdebug.show_exception_trace=On \n\
-  ; xdebug.show_local_vars=1 \n\
-  xdebug.trace_format=2 \n\
-  xdebug.trace_options=1 \n\
-  xdebug.collect_return=1 \n\
-  xdebug.collect_assignments=On \n\
-  ; xdebug.force_display_errors=On \n\
-  ; xdebug.scream=On \n\
-  ; xdebug.halt_level=E_WARNING|E_NOTICE|E_USER_WARNING|E_USER_NOTICE \n\
-  xdebug.output_dir=/home/www-data/website/var/docker-log/xdebug/ \n\
-  " >> /etc/php81/php.ini;
+  envsubst '${ERROR_REPORTING} ${DISPLAY_ERROR} {OPCACHE_VALIDATE_TIMESTAMPS} ${XDEBUG_VALUES}' < /etc/php81/php.ini.conf > /etc/php81/php.ini
 fi
 
 
