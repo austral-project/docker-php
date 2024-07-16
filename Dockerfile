@@ -47,10 +47,13 @@ RUN apk add --update --no-cache php82 \
   php82-pcntl \
   php82-exif \
   postgresql16-client \
-  mysql-client
+  mysql-client \
+  nodejs \
+  npm
 
-RUN apk add --update --no-cache nodejs=16.20.2-r0 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.15/main  \
-  npm=8.1.3-r0 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.15/main
+
+#RUN apk add --update --no-cache nodejs=16.20.2-r0 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.15/main  \
+#  npm=8.1.3-r0 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.15/main
 
 RUN export NODE_OPTIONS=--openssl-legacy-provider
 RUN rm -rf /var/cache/apk/*

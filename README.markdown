@@ -10,8 +10,8 @@ View repository for the base image Alpine 3.20 : [Docker Hub](https://hub.docker
 
 __Versions__
 * PHP : 8.2.21
-* Node : 16.20.2
-* NPM : 8.1.3
+* Node : 20.15.1
+* NPM : 10.2.5
 * Squoosh-cli : 0.7.2
 * PostgreSQL-client : 16.3
 * MySQL-client : 10.11.8
