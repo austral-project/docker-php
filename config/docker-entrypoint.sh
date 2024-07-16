@@ -44,7 +44,7 @@ then
   fi
 
   echo "Install XDEBUG"
-  apk add php81-xdebug php81-dev
+  apk add php82-xdebug php82-dev
   XDEBUG_VALUES="
 [xdebug]
 zend_extension=xdebug.so
@@ -87,7 +87,7 @@ then
   echo "php.ini exist"
 else
   echo "Generate php.ini"
-  envsubst '${ERROR_REPORTING} ${DISPLAY_ERROR} {OPCACHE_VALIDATE_TIMESTAMPS} ${XDEBUG_VALUES}' < /etc/php81/php.ini.conf > /etc/php81/php.ini
+  envsubst '${ERROR_REPORTING} ${DISPLAY_ERROR} {OPCACHE_VALIDATE_TIMESTAMPS} ${XDEBUG_VALUES}' < /etc/php82/php.ini.conf > /etc/php82/php.ini
 fi
 
 
