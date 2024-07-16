@@ -87,4 +87,4 @@ EXPOSE 9900
 STOPSIGNAL SIGQUIT
 
 WORKDIR /home/www-data/website
-CMD ["php-fpm81", "--nodaemonize"]
+CMD ["php-fpm82", "--nodaemonize"]
