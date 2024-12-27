@@ -13,6 +13,20 @@ if [ -z "${APP_DEBUG+x}" ]; then
   APP_DEBUG=false
 fi
 
+if [ -z "${PHP_MEMORY_LIMIT+x}" ]; then
+  PHP_MEMORY_LIMIT="512M"
+fi
+if [ -z "${PHP_MAX_EXECUTION_TIME+x}" ]; then
+  PHP_MAX_EXECUTION_TIME="120"
+fi
+if [ -z "${PHP_MAX_INPUT_TIME+x}" ]; then
+  PHP_MAX_INPUT_TIME="60"
+fi
+if [ -z "${PHP_MAX_INPUT_VARS+x}" ]; then
+  PHP_MAX_INPUT_VARS="5000"
+fi
+
+
 #### Init var XDEBUG if not defined or is empty
 if [ -z ${XDEBUG+x} ]; then
   XDEBUG=false
@@ -34,6 +48,11 @@ fi
 echo "Error reporting : ${ERROR_REPORTING}"
 echo "Display error : ${DISPLAY_ERROR}"
 echo "Opcache Validate timestamps : ${OPCACHE_VALIDATE_TIMESTAMPS}"
+
+echo "PHP Memory limit : ${PHP_MEMORY_LIMIT}"
+echo "Opcache Max Execution Time : ${PHP_MAX_EXECUTION_TIME}"
+echo "Opcache Max Input Time : ${PHP_MAX_INPUT_TIME}"
+echo "Opcache Max Input Vars : ${PHP_MAX_INPUT_VARS}"
 
 echo "Xdebug enabled ? : ${XDEBUG}"
 XDEBUG_VALUES=""
@@ -82,12 +101,17 @@ export ERROR_REPORTING
 export DISPLAY_ERROR
 export OPCACHE_VALIDATE_TIMESTAMPS
 
-if test -f /etc/php81/php.ini
+export PHP_MEMORY_LIMIT
+export PHP_MAX_EXECUTION_TIME
+export PHP_MAX_INPUT_TIME
+export PHP_MAX_INPUT_VARS
+
+if test -f /etc/php82/php.ini
 then
   echo "php.ini exist"
 else
   echo "Generate php.ini"
-  envsubst '${ERROR_REPORTING} ${DISPLAY_ERROR} {OPCACHE_VALIDATE_TIMESTAMPS} ${XDEBUG_VALUES}' < /etc/php82/php.ini.conf > /etc/php82/php.ini
+  envsubst '${ERROR_REPORTING} ${DISPLAY_ERROR} {OPCACHE_VALIDATE_TIMESTAMPS} ${PHP_MEMORY_LIMIT} ${PHP_MAX_EXECUTION_TIME} ${PHP_MAX_INPUT_TIME} ${PHP_MAX_INPUT_VARS} ${XDEBUG_VALUES}' < /etc/php82/php.ini.conf > /etc/php82/php.ini
 fi
 
 
