@@ -1,9 +1,8 @@
 #!/usr/bin/env sh
 set -eu
-if [ ! -d "/home/www-data/website/var/docker-log/php" ]; then
-  mkdir -p /home/www-data/website/var/docker-log/php
+if [ ! -d "/home/www-data/website/docker-log/php" ]; then
+  mkdir -p /home/www-data/website/docker-log/php
 fi
-chown -R www-data:www-data /home/www-data/website/var
 
 #### Init var APP_ENV if not defined or is empty
 if [ -z "${APP_ENV+x}" ]; then
