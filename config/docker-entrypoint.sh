@@ -3,6 +3,10 @@ set -eu
 if [ ! -d "/home/www-data/website/docker-log/php" ]; then
   mkdir -p /home/www-data/website/docker-log/php
 fi
+if [ ! -d "/home/www-data/website/var/cache" ]; then
+  mkdir -p /home/www-data/website/var/cache
+fi
+chown -R www-data:www-data /home/www-data/website/var/cache
 
 #### Init var APP_ENV if not defined or is empty
 if [ -z "${APP_ENV+x}" ]; then
