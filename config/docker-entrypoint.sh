@@ -8,6 +8,7 @@ PHP_MAX_EXECUTION_TIME=${PHP_MAX_EXECUTION_TIME:-120}
 PHP_MAX_INPUT_TIME=${PHP_MAX_INPUT_TIME:-60}
 PHP_MAX_INPUT_VARS=${PHP_MAX_INPUT_VARS:-5000}
 XDEBUG=${XDEBUG:-0}
+XDEBUG=${XDEBUG:-1}
 
 # =========================
 # Create log directories and set ownership
