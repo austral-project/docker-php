@@ -5,16 +5,6 @@ LABEL maintainer="Matthieu Beurel <matthieu@austral.dev>"
 ENV PHP_VERSION=84
 ENV PHP_BIN=php-fpm${PHP_VERSION}
 
-# Default environment variables
-ENV SCRIPT_AUTO=1 \
-    APP_ENV=prod \
-    APP_DEBUG=false \
-    PHP_MEMORY_LIMIT=512M \
-    PHP_MAX_EXECUTION_TIME=120 \
-    PHP_MAX_INPUT_TIME=60 \
-    PHP_MAX_INPUT_VARS=5000 \
-    XDEBUG=0
-
 # Install PHP 8.4 and required extensions
 RUN apk add --update --no-cache \
     php${PHP_VERSION} \
