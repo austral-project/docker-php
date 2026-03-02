@@ -5,7 +5,7 @@ LABEL maintainer="Matthieu Beurel <matthieu@austral.dev>"
 # Use root for installation
 USER root
 
-ENV PHP_VERSION=${PHP_VERSION}
+ENV PHP_VERSION=84
 ENV PHP_BIN=php-fpm${PHP_VERSION}
 
 # Default environment variables
@@ -80,4 +80,4 @@ ENTRYPOINT ["/docker-entrypoint.sh"]
 USER www-data
 EXPOSE 9900
 STOPSIGNAL SIGQUIT
-CMD $PHP_BIN --nodaemonize
+CMD ["sh", "-c", "$PHP_BIN --nodaemonize"]
