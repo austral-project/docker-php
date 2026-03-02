@@ -1,90 +1,83 @@
-FROM australproject/alpine:3.20
+# Dockerfile.php
+FROM australproject/alpine:3.23
 LABEL maintainer="Matthieu Beurel <matthieu@austral.dev>"
 
-ENV SCRIPT_AUTO=1
+# Use root for installation
+USER root
 
-RUN apk update && apk upgrade
-RUN apk add --update --no-cache php82 \
-  php82-pecl-redis \
-  php82-common \
-  php82-pecl-msgpack \
-  php82-pear \
-  php82-opcache\
-  php82-session \
-  php82-cli \
-  php82-iconv \
-  php82-pcntl \
-  php82-fileinfo \
-  php82-exif \
-  php82-json \
-  php82-curl \
-  php82-sodium \
-  php82-soap \
-  php82-fpm \
-  php82-gd \
-  php82-gmp \
-  php82-imap \
-  php82-intl \
-  php82-json \
-  php82-phar \
-  php82-pdo \
-  php82-mbstring \
-  php82-opcache \
-  php82-sqlite3 \
-  php82-ctype \
-  php82-xml \
-  php82-simplexml \
-  php82-xsl \
-  php82-zip \
-  php82-tokenizer \
-  php82-openssl \
-  php82-xmlwriter \
-  php82-xmlreader \
-  php82-sockets \
-  php82-pdo_pgsql \
-  php82-pgsql \
-  php82-pdo_mysql\
-  php82-pcntl \
-  php82-exif \
-  postgresql16-client \
-  mysql-client \
-  nodejs \
-  npm
+ENV PHP_VERSION=${PHP_VERSION}
+ENV PHP_BIN=php-fpm${PHP_VERSION}
 
+# Default environment variables
+ENV SCRIPT_AUTO=1 \
+    APP_ENV=prod \
+    APP_DEBUG=false \
+    PHP_MEMORY_LIMIT=512M \
+    PHP_MAX_EXECUTION_TIME=120 \
+    PHP_MAX_INPUT_TIME=60 \
+    PHP_MAX_INPUT_VARS=5000 \
+    XDEBUG=0
 
-#RUN apk add --update --no-cache nodejs=16.20.2-r0 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.15/main  \
-#  npm=8.1.3-r0 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.15/main
-
-RUN export NODE_OPTIONS=--openssl-legacy-provider
-RUN rm -rf /var/cache/apk/*
-
-# Install npm and squoosh-cli
-RUN npm install -g @squoosh/cli
-RUN chown -R www-data:www-data /usr/lib/node_modules/
-
-# Create php executable
-RUN ln -s /usr/bin/php82 /usr/bin/php
-
-RUN cp /usr/share/zoneinfo/Europe/Paris /etc/localtime
-RUN echo ${TZ} >  /etc/timezone
-
-#RUN sed -i 's/#default_bits/default_bits/' /etc/ssl/openssl.cnf
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+# Install PHP 8.4 and required extensions
+RUN apk add --update --no-cache \
+    php${PHP_VERSION} \
+    php${PHP_VERSION}-fpm \
+    php${PHP_VERSION}-opcache \
+    php${PHP_VERSION}-cli \
+    php${PHP_VERSION}-common \
+    php${PHP_VERSION}-mbstring \
+    php${PHP_VERSION}-curl \
+    php${PHP_VERSION}-json \
+    php${PHP_VERSION}-pdo \
+    php${PHP_VERSION}-pdo_mysql \
+    php${PHP_VERSION}-pdo_pgsql \
+    php${PHP_VERSION}-pgsql \
+    php${PHP_VERSION}-gd \
+    php${PHP_VERSION}-intl \
+    php${PHP_VERSION}-xml \
+    php${PHP_VERSION}-xmlwriter \
+    php${PHP_VERSION}-xmlreader \
+    php${PHP_VERSION}-ctype \
+    php${PHP_VERSION}-session \
+    php${PHP_VERSION}-tokenizer \
+    php${PHP_VERSION}-soap \
+    php${PHP_VERSION}-sockets \
+    php${PHP_VERSION}-zip \
+    php${PHP_VERSION}-gmp \
+    php${PHP_VERSION}-exif \
+    php${PHP_VERSION}-openssl \
+    php${PHP_VERSION}-pecl-redis \
+    php${PHP_VERSION}-pecl-msgpack \
+    php${PHP_VERSION}-pear \
+    php${PHP_VERSION}-iconv \
+    php${PHP_VERSION}-pcntl \
+    php${PHP_VERSION}-fileinfo \
+    php${PHP_VERSION}-sodium \
+    php${PHP_VERSION}-imap \
+    php${PHP_VERSION}-phar \
+    php${PHP_VERSION}-sqlite3 \
+    php${PHP_VERSION}-simplexml \
+    php${PHP_VERSION}-xsl \
+    postgresql16-client \
+    mysql-client \
+    bash \
+    curl \
+    && ln -sf /usr/bin/php${PHP_VERSION} /usr/bin/php \
+    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
+    && rm -rf /var/cache/apk/*
 
 # Init config
-COPY config/www.conf /etc/php82/fpm/pool.d/www.conf
-COPY config/php-fpm.conf /etc/php82/php-fpm.conf
-COPY config/php.ini.conf /etc/php82/php.ini.conf
-RUN rm /etc/php82/php.ini
+COPY config/www.conf /etc/php${PHP_VERSION}/fpm/pool.d/www.conf
+COPY config/php-fpm.conf config/php.ini.conf /etc/php${PHP_VERSION}/
+RUN rm -f /etc/php${PHP_VERSION}/php.ini
 
-COPY config/docker-entrypoint.sh /
-RUN chmod -R 755 docker-entrypoint.sh
-
-#  Init Workdir, Entrypoint, CMD
-ENTRYPOINT ["/docker-entrypoint.sh"]
-
-EXPOSE 9900
-STOPSIGNAL SIGQUIT
+COPY config/docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
 
 WORKDIR /home/www-data/website
-CMD ["php-fpm82", "--nodaemonize"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
+
+USER www-data
+EXPOSE 9900
+STOPSIGNAL SIGQUIT
+CMD $PHP_BIN --nodaemonize

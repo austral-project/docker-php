@@ -1,6 +1,14 @@
 Changelog
 =========
 
+### Version PHP 8.4 (2026-03-02)
+* Update Alpine Version to 3.23
+* Update PHP Version to 8.4
+* Update PostgreSQL-client Version to 16.12
+* Update MySQL-client Version to 11.4.9
+* Delete Nodejs
+* Delete Npm
+
 ### Version PHP 8.2 (2023-07-16)
 * Update Alpine Version to 3.20
 * Update PHP Version to 8.2
