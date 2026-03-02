@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 set -eu
 
+SCRIPT_AUTO=${SCRIPT_AUTO:-1}
 APP_ENV=${APP_ENV:-prod}
 APP_DEBUG=${APP_DEBUG:-false}
 PHP_MEMORY_LIMIT=${PHP_MEMORY_LIMIT:-512M}
@@ -8,7 +9,6 @@ PHP_MAX_EXECUTION_TIME=${PHP_MAX_EXECUTION_TIME:-120}
 PHP_MAX_INPUT_TIME=${PHP_MAX_INPUT_TIME:-60}
 PHP_MAX_INPUT_VARS=${PHP_MAX_INPUT_VARS:-5000}
 XDEBUG=${XDEBUG:-0}
-XDEBUG=${XDEBUG:-1}
 
 # =========================
 # Create log directories and set ownership
