@@ -26,10 +26,12 @@ if [ "${APP_DEBUG}" = "false" ]; then
   ERROR_REPORTING="E_ALL & ~E_DEPRECATED & ~E_STRICT"
   DISPLAY_ERRORS="Off"
   OPCACHE_VALIDATE_TIMESTAMPS="0"
+  OPCACHE_ENABLED="1"
 else
   ERROR_REPORTING="E_ALL"
   DISPLAY_ERRORS="On"
   OPCACHE_VALIDATE_TIMESTAMPS="1"
+  OPCACHE_ENABLED="0"
 fi
 
 # =========================
@@ -39,6 +41,7 @@ echo "App ENV: ${APP_ENV}, Debug: ${APP_DEBUG}"
 echo "------------------------------------------"
 echo "Error reporting : ${ERROR_REPORTING}"
 echo "Display error : ${DISPLAY_ERRORS}"
+echo "Opcache Enabled : ${OPCACHE_ENABLED}"
 echo "Opcache Validate timestamps : ${OPCACHE_VALIDATE_TIMESTAMPS}"
 echo "------------------------------------------"
 echo "PHP Memory limit : ${PHP_MEMORY_LIMIT}"
@@ -52,7 +55,7 @@ echo "Xdebug enabled ? : ${XDEBUG}"
 # Generate php.ini from template if missing
 # =========================
 if [ ! -f /etc/php${PHP_VERSION}/php.ini ]; then
-  envsubst '${ERROR_REPORTING} ${DISPLAY_ERRORS} ${OPCACHE_VALIDATE_TIMESTAMPS} ${PHP_MEMORY_LIMIT} ${PHP_MAX_EXECUTION_TIME} ${PHP_MAX_INPUT_TIME} ${PHP_MAX_INPUT_VARS}' \
+  envsubst '${ERROR_REPORTING} ${DISPLAY_ERRORS} ${OPCACHE_ENABLED} ${OPCACHE_VALIDATE_TIMESTAMPS} ${PHP_MEMORY_LIMIT} ${PHP_MAX_EXECUTION_TIME} ${PHP_MAX_INPUT_TIME} ${PHP_MAX_INPUT_VARS}' \
   < /etc/php${PHP_VERSION}/php.ini.conf > /etc/php${PHP_VERSION}/php.ini
 fi
 
