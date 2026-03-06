@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 set -eu
 
+PHP_VERSION=${PHP_VERSION:-84}
 SCRIPT_AUTO=${SCRIPT_AUTO:-1}
 APP_ENV=${APP_ENV:-prod}
 APP_DEBUG=${APP_DEBUG:-false}
@@ -50,6 +51,15 @@ echo "Max Input Time : ${PHP_MAX_INPUT_TIME}"
 echo "Max Input Vars : ${PHP_MAX_INPUT_VARS}"
 echo "------------------------------------------"
 echo "Xdebug enabled ? : ${XDEBUG}"
+
+export ERROR_REPORTING
+export DISPLAY_ERRORS
+export OPCACHE_VALIDATE_TIMESTAMPS
+export OPCACHE_ENABLED
+export PHP_MEMORY_LIMIT
+export PHP_MAX_EXECUTION_TIME
+export PHP_MAX_INPUT_TIME
+export PHP_MAX_INPUT_VARS
 
 # =========================
 # Generate php.ini from template if missing
