@@ -93,6 +93,7 @@ xdebug.idekey=PHPSTORM
 xdebug.output_dir=/home/www-data/website/docker-log/xdebug/" > /etc/php${PHP_VERSION}/conf.d/99-xdebug.ini
 fi
 
+chown -R www-data:www-data /home/www-data/.composer 2>/dev/null || true
 
 # =========================
 # Run automatic script if SCRIPT_AUTO is enabled

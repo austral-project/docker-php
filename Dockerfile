@@ -61,6 +61,9 @@ RUN rm -f /etc/php${PHP_VERSION}/php.ini
 COPY config/docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 
+RUN mkdir -p /home/www-data/.composer \
+    && chown -R www-data:www-data /home/www-data
+
 WORKDIR /home/www-data/website
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
