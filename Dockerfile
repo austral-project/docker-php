@@ -49,6 +49,7 @@ RUN apk add --update --no-cache \
     mysql-client \
     bash \
     curl \
+    su-exec \
     && ln -sf /usr/bin/php${PHP_VERSION} /usr/bin/php \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && rm -rf /var/cache/apk/*
