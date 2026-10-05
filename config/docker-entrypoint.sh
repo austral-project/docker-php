@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 set -eu
 
-PHP_VERSION=${PHP_VERSION:-84}
+PHP_VERSION=${PHP_VERSION:-56}
 SCRIPT_AUTO=${SCRIPT_AUTO:-1}
 APP_ENV=${APP_ENV:-prod}
 APP_DEBUG=${APP_DEBUG:-false}
@@ -79,18 +79,15 @@ if [ "${XDEBUG}" = "1" ]; then
 
   apk add --no-cache php${PHP_VERSION}-xdebug php${PHP_VERSION}-dev
   echo "[xdebug]
-zend_extension=xdebug.so
-xdebug.mode=develop,debug,profile,trace
-xdebug.start_with_request=On
-xdebug.discover_client_host=On
-xdebug.client_port=9000
-xdebug.max_nesting_level=500
-xdebug.client_enable=On
-xdebug.profiler_append=On
-xdebug.log=/home/www-data/website/var/log/xdebug.log
-xdebug.log_level=7
+zend_extension=$(php-config${PHP_VERSION} --extension-dir)/xdebug.so
+xdebug.remote_enable=1
+xdebug.remote_autostart=1
+xdebug.remote_connect_back=1
+xdebug.remote_port=9000
+xdebug.remote_log=/home/www-data/website/var/log/xdebug.log
 xdebug.idekey=PHPSTORM
-xdebug.output_dir=/home/www-data/website/docker-log/xdebug/" > /etc/php${PHP_VERSION}/conf.d/99-xdebug.ini
+xdebug.profiler_enable=1
+xdebug.profiler_output_dir=/home/www-data/website/docker-log/xdebug/" > /etc/php${PHP_VERSION}/conf.d/99-xdebug.ini
 fi
 
 chown -R www-data:www-data /home/www-data/.composer 2>/dev/null || true
