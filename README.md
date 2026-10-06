@@ -45,7 +45,7 @@ docker run --rm -u 3001:3001 -e SCRIPT_AUTO=0 australproject/php:8.0 php -i | gr
 | Variable | Default | Description |
 |---|---|---|
 | `APP_ENV` | `prod` | `prod` or `dev` |
-| `APP_DEBUG` | `0` | `0`/`false` or `1`/`true`; `true` enables `display_errors` and `E_ALL`, and disables OPcache |
+| `APP_DEBUG` | `0` | `0`/`false` or `1`/`true`; enables `display_errors` and `E_ALL` |
 | `XDEBUG` | `0` | `1` loads Xdebug 3 (client port 9000) |
 | `SCRIPT_AUTO` | `1` | `1` runs `script-auto/run.sh` if it exists. Set `0` on cron and secondary services |
 
@@ -115,7 +115,7 @@ Everything goes to the container output (`docker logs`): FPM errors, PHP errors 
 
 ## Sessions with several replicas
 
-The default `/tmp` is not shared between replicas. Use a shared store, for example Redis (the `redis` extension is included):
+The default `/tmp` is not shared between replicas. Use a shared store, for example Redis (extension included):
 
 ```
 PHP_SESSION_SAVE_PATH=tcp://redis:6379
