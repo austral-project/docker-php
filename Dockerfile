@@ -82,6 +82,8 @@ COPY --from=composer:2.2 /usr/bin/composer /usr/local/bin/composer
 # Config templates (rendered at start-up by the entrypoint into /tmp/php)
 RUN mkdir -p /usr/local/share/php-templates
 COPY config/php.ini.conf config/php-fpm.conf config/www.conf /usr/local/share/php-templates/
+# Templates must be readable by any UID (COPY keeps the source file mode)
+RUN chmod -R a+rX /usr/local/share/php-templates
 # Remove distro configs so only the rendered ones are used
 RUN rm -f /etc/php${PHP_VERSION}/php.ini /etc/php${PHP_VERSION}/php-fpm.conf \
           /etc/php${PHP_VERSION}/php-fpm.d/*.conf /etc/php${PHP_VERSION}/fpm/pool.d/*.conf 2>/dev/null || true
