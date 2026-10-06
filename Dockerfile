@@ -1,9 +1,16 @@
-# Dockerfile.php
+FROM alpine:3.23 AS supercronic
+ARG SUPERCRONIC_VERSION=0.2.49
+ARG SUPERCRONIC_SHA256=a53ae236602c7338aba3fbaff40bda6300eae3b9fedb8261eb06cfe3724430c1
+RUN apk add --no-cache curl \
+ && curl -fsSL -o /supercronic \
+    "https://github.com/aptible/supercronic/releases/download/v${SUPERCRONIC_VERSION}/supercronic-linux-amd64" \
+ && echo "${SUPERCRONIC_SHA256}  /supercronic" | sha256sum -c - \
+ && chmod +x /supercronic
+
 FROM australproject/alpine:3.23
 LABEL maintainer="Matthieu Beurel <matthieu@austral.dev>"
 
 ENV PHP_VERSION=84
-ENV PHP_BIN=php-fpm${PHP_VERSION}
 
 # Install PHP 8.4 and required extensions
 RUN apk add --update --no-cache \
@@ -50,24 +57,38 @@ RUN apk add --update --no-cache \
     bash \
     curl \
     su-exec \
+    gettext \
+    php${PHP_VERSION}-xdebug \
     && ln -sf /usr/bin/php${PHP_VERSION} /usr/bin/php \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
+    && rm -f /etc/php${PHP_VERSION}/conf.d/*xdebug*.ini \
     && rm -rf /var/cache/apk/*
 
-# Init config
-COPY config/www.conf /etc/php${PHP_VERSION}/fpm/pool.d/www.conf
-COPY config/php-fpm.conf config/php.ini.conf /etc/php${PHP_VERSION}/
-RUN rm -f /etc/php${PHP_VERSION}/php.ini
+# Config templates (rendered at start-up by the entrypoint into /tmp/php)
+RUN mkdir -p /usr/local/share/php-templates
+COPY config/php.ini.conf config/php-fpm.conf config/www.conf /usr/local/share/php-templates/
+# Remove distro configs so only the rendered ones are used
+RUN rm -f /etc/php${PHP_VERSION}/php.ini /etc/php${PHP_VERSION}/php-fpm.conf /etc/php${PHP_VERSION}/php-fpm.d/*.conf /etc/php${PHP_VERSION}/fpm/pool.d/*.conf 2>/dev/null || true
+
+COPY --from=supercronic /supercronic /usr/local/bin/supercronic
 
 COPY config/docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh
+RUN chmod 0755 /docker-entrypoint.sh
 
-RUN mkdir -p /home/www-data/.composer \
+# Any UID must be able to write here (rendered config, tmp)
+RUN mkdir -p /tmp/php /home/www-data/website \
+    && chmod 1777 /tmp/php \
     && chown -R www-data:www-data /home/www-data
+ENV PHP_RUN_DIR=/tmp/php
 
-WORKDIR /home/www-data/website
+#  Init Workdir, Entrypoint, CMD
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
 EXPOSE 9900
 STOPSIGNAL SIGQUIT
-CMD ["sh", "-c", "$PHP_BIN --nodaemonize"]
+
+HEALTHCHECK --interval=30s --timeout=3s --start-period=20s --retries=3 \
+  CMD php -r 'exit(@fsockopen("127.0.0.1", 9900) ? 0 : 1);'
+
+WORKDIR /home/www-data/website
+CMD ["php-fpm"]
