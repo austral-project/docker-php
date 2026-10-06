@@ -57,8 +57,8 @@ docker run --rm -u 3001:3001 -e SCRIPT_AUTO=0 australproject/php:8.1 php -i | gr
 | `PHP_MAX_EXECUTION_TIME` | `120` |
 | `PHP_MAX_INPUT_TIME` | `60` |
 | `PHP_MAX_INPUT_VARS` | `5000` |
-| `PHP_POST_MAX_SIZE` | `64M` |
-| `PHP_UPLOAD_MAX_FILESIZE` | `64M` |
+| `PHP_POST_MAX_SIZE` | `512M` |
+| `PHP_UPLOAD_MAX_FILESIZE` | `512M` |
 | `PHP_SESSION_SAVE_PATH` | `/tmp` |
 | `OPCACHE_ENABLED` | `1` |
 | `OPCACHE_VALIDATE_TIMESTAMPS` | `1` |
