@@ -7,6 +7,8 @@ RUN apk add --no-cache curl \
  && echo "${SUPERCRONIC_SHA256}  /supercronic" | sha256sum -c - \
  && chmod +x /supercronic
 
+FROM node:16-alpine3.17 AS node
+
 FROM australproject/alpine:3.17
 LABEL maintainer="Matthieu Beurel <matthieu@austral.dev>"
 
@@ -61,8 +63,13 @@ RUN apk add --update --no-cache php81 \
   gettext \
   su-exec
 
-RUN apk add --update --no-cache nodejs=16.20.1-r0 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.15/main  \
-  npm=8.1.3-r0 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.15/main
+# Node 16 (needed by squoosh-cli) copied from the official image: mixing Alpine 3.15
+# and 3.17 repositories with apk is fragile (nodejs / nodejs-current conflicts).
+RUN apk add --no-cache libstdc++
+COPY --from=node /usr/local/bin/node /usr/local/bin/node
+COPY --from=node /usr/local/lib/node_modules /usr/local/lib/node_modules
+RUN ln -sf ../lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm \
+ && ln -sf ../lib/node_modules/npm/bin/npx-cli.js /usr/local/bin/npx
 
 RUN export NODE_OPTIONS=--openssl-legacy-provider
 # Xdebug is installed but only enabled on demand (XDEBUG=1) by the entrypoint
@@ -71,7 +78,7 @@ RUN rm -f /etc/php81/conf.d/*xdebug*.ini \
 
 # Install npm and squoosh-cli
 RUN npm install -g @squoosh/cli
-RUN chown -R www-data:www-data /usr/lib/node_modules/
+RUN chown -R www-data:www-data /usr/local/lib/node_modules/
 
 RUN cp /usr/share/zoneinfo/Europe/Paris /etc/localtime
 RUN echo ${TZ} >  /etc/timezone
