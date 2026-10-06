@@ -1,3 +1,12 @@
+FROM alpine:3.23 AS supercronic
+ARG SUPERCRONIC_VERSION=0.2.49
+ARG SUPERCRONIC_SHA256=a53ae236602c7338aba3fbaff40bda6300eae3b9fedb8261eb06cfe3724430c1
+RUN apk add --no-cache curl \
+ && curl -fsSL -o /supercronic \
+    "https://github.com/aptible/supercronic/releases/download/v${SUPERCRONIC_VERSION}/supercronic-linux-amd64" \
+ && echo "${SUPERCRONIC_SHA256}  /supercronic" | sha256sum -c - \
+ && chmod +x /supercronic
+
 FROM australproject/alpine:3.15
 LABEL maintainer="Matthieu Beurel <matthieu@austral.dev>"
 
@@ -46,9 +55,14 @@ RUN apk add --update --no-cache php8 \
   php8-exif \
   nodejs \
   mysql-client \
-  npm
+  npm \
+  php8-xdebug \
+  gettext \
+  su-exec
 
-RUN rm -rf /var/cache/apk/*
+# Xdebug is installed but only enabled on demand (XDEBUG=1) by the entrypoint
+RUN rm -f /etc/php8/conf.d/*xdebug*.ini \
+ && rm -rf /var/cache/apk/*
 
 # Install npm and squoosh-cli
 RUN npm install -g @squoosh/cli
@@ -63,15 +77,23 @@ RUN ln -s /usr/bin/phar8 /usr/bin/phar
 #RUN sed -i 's/#default_bits/default_bits/' /etc/ssl/openssl.cnf
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Init config
-COPY config/www.conf /etc/php8/fpm/pool.d/www.conf
-COPY config/php-fpm.conf /etc/php8/php-fpm.conf
-COPY config/php.ini.conf /etc/php8/php.ini.conf
-RUN rm /etc/php8/php.ini
+# Config templates (rendered at start-up by the entrypoint into /tmp/php)
+RUN mkdir -p /usr/local/share/php-templates
+COPY config/php.ini.conf config/php-fpm.conf config/www.conf /usr/local/share/php-templates/
+# Remove distro configs so only the rendered ones are used
+RUN rm -f /etc/php8/php.ini /etc/php8/php-fpm.conf /etc/php8/php-fpm.d/*.conf /etc/php8/fpm/pool.d/*.conf 2>/dev/null || true
 
+COPY --from=supercronic /supercronic /usr/local/bin/supercronic
 
-COPY config/docker-entrypoint.sh /
-RUN chmod -R 755 docker-entrypoint.sh
+COPY config/docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod 0755 /docker-entrypoint.sh
+
+# Any UID must be able to write here (rendered config, tmp)
+RUN mkdir -p /tmp/php /home/www-data/website \
+    && chmod 1777 /tmp/php \
+    && chown -R www-data:www-data /home/www-data
+ENV PHP_VERSION=8
+ENV PHP_RUN_DIR=/tmp/php
 
 #  Init Workdir, Entrypoint, CMD
 ENTRYPOINT ["/docker-entrypoint.sh"]
@@ -79,5 +101,8 @@ ENTRYPOINT ["/docker-entrypoint.sh"]
 EXPOSE 9900
 STOPSIGNAL SIGQUIT
 
+HEALTHCHECK --interval=30s --timeout=3s --start-period=20s --retries=3 \
+  CMD php -r 'exit(@fsockopen("127.0.0.1", 9900) ? 0 : 1);'
+
 WORKDIR /home/www-data/website
-CMD ["php-fpm8", "--nodaemonize"]
+CMD ["php-fpm"]
