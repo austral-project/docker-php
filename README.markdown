@@ -15,6 +15,7 @@ __Versions__
 * PostgreSQL-client : 10.10
 * MariaDB-client : 10.1.41
 * Composer : 2.2 (LTS)
+* Supercronic : 0.2.49
 
 __PECL extensions (built from source)__
 * redis : 4.3.0

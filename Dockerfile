@@ -76,6 +76,13 @@ COPY config/www.conf /etc/php${PHP_VERSION}/fpm/pool.d/www.conf
 COPY config/php-fpm.conf config/php.ini.conf /etc/php${PHP_VERSION}/
 RUN rm -f /etc/php${PHP_VERSION}/php.ini
 
+ARG SUPERCRONIC_VERSION=0.2.49
+ARG SUPERCRONIC_SHA256=a53ae236602c7338aba3fbaff40bda6300eae3b9fedb8261eb06cfe3724430c1
+ADD --checksum=sha256:${SUPERCRONIC_SHA256} \
+    https://github.com/aptible/supercronic/releases/download/v${SUPERCRONIC_VERSION}/supercronic-linux-amd64 \
+    /usr/local/bin/supercronic
+RUN chmod +x /usr/local/bin/supercronic
+
 COPY config/docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 
