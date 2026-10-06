@@ -159,10 +159,20 @@ else
 fi
 
 # ---------- Main process ----------
-# Default command "php-fpm" expands to FPM with the rendered configuration.
-if [ "${1:-}" = "php-fpm" ]; then
-  shift
-  set -- "php-fpm${PHP_VERSION}" --nodaemonize \
-        --fpm-config "$PHP_RUN_DIR/php-fpm.conf" -c "$PHP_RUN_DIR/php.ini" "$@"
-fi
+# Any "php-fpm" / "php-fpm<version>" command (default CMD, or a compose "command:")
+# is run with the rendered configuration, since the distro php-fpm.conf is removed.
+case "${1:-}" in
+  php-fpm|php-fpm[0-9]*)
+    shift
+    case " $* " in
+      *" --fpm-config "*|*" -y "*) ;;
+      *) set -- --fpm-config "$PHP_RUN_DIR/php-fpm.conf" -c "$PHP_RUN_DIR/php.ini" "$@" ;;
+    esac
+    case " $* " in
+      *" --nodaemonize "*|*" -F "*) ;;
+      *) set -- --nodaemonize "$@" ;;
+    esac
+    set -- "php-fpm${PHP_VERSION}" "$@"
+    ;;
+esac
 exec "$@"
