@@ -1,4 +1,13 @@
 # Dockerfile.php
+FROM alpine:3.7 AS supercronic
+ARG SUPERCRONIC_VERSION=0.2.49
+ARG SUPERCRONIC_SHA256=a53ae236602c7338aba3fbaff40bda6300eae3b9fedb8261eb06cfe3724430c1
+RUN apk add --no-cache curl \
+ && curl -fsSL -o /supercronic \
+    "https://github.com/aptible/supercronic/releases/download/v${SUPERCRONIC_VERSION}/supercronic-linux-amd64" \
+ && echo "${SUPERCRONIC_SHA256}  /supercronic" | sha256sum -c - \
+ && chmod +x /supercronic
+
 FROM alpine:3.23 AS pecl-src
 RUN apk add --no-cache curl \
     && mkdir /src && cd /src \
@@ -9,7 +18,6 @@ RUN apk add --no-cache curl \
 
 FROM australproject/alpine:3.7
 LABEL maintainer="Matthieu Beurel <matthieu@austral.dev>"
-
 
 ENV PHP_VERSION=5
 ENV PHP_BIN=php-fpm${PHP_VERSION}
@@ -76,11 +84,8 @@ COPY config/www.conf /etc/php${PHP_VERSION}/fpm/pool.d/www.conf
 COPY config/php-fpm.conf config/php.ini.conf /etc/php${PHP_VERSION}/
 RUN rm -f /etc/php${PHP_VERSION}/php.ini
 
-ARG SUPERCRONIC_VERSION=0.2.49
-ARG SUPERCRONIC_SHA256=a53ae236602c7338aba3fbaff40bda6300eae3b9fedb8261eb06cfe3724430c1
-ADD --checksum=sha256:${SUPERCRONIC_SHA256} \
-    https://github.com/aptible/supercronic/releases/download/v${SUPERCRONIC_VERSION}/supercronic-linux-amd64 \
-    /usr/local/bin/supercronic
+COPY --from=supercronic /supercronic /usr/local/bin/supercronic
+
 RUN chmod +x /usr/local/bin/supercronic
 
 COPY config/docker-entrypoint.sh /docker-entrypoint.sh
