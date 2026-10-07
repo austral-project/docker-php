@@ -1,11 +1,10 @@
 Changelog
 =========
 
-### Version PHP 8.0 (2026-10-07)
+### Version PHP 7.4 (2026-10-07)
 * Add env vars `CREATE_LOG_DIR` and `CREATE_CACHE_DIR` (`1`/`true` to enable)
 * Update start-up: `docker-log/php` and `var/cache` are no longer created by default (set `CREATE_LOG_DIR=1` / `CREATE_CACHE_DIR=1` to restore the previous behaviour)
 
-### Version 8.0 (2026-10-06)
 **Non-root support**
 * Add support for any UID/GID (e.g. Swarm `user: "3001:3001"`); the container no longer needs root
 * Add rendering of the configuration at start-up into `/tmp/php` (`PHPRC`, `PHP_INI_SCAN_DIR`), writable by any user
@@ -38,7 +37,6 @@ Changelog
 * Update PHP-FPM log: errors now go to the container output instead of `var/docker-log/php/php-fpm.log`
 * Update default command to `php-fpm` (expanded by the entrypoint with the rendered configuration)
 
-### Version 8.0 (2022-07-06)
 * Create Dockerfile
 * Create Github repository
 * Create an image in the Docker hub

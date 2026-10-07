@@ -1,7 +1,7 @@
-# Austral Docker PHP 8.0
+# Austral Docker PHP 7.4
 
 [![License](https://img.shields.io/github/license/austral-project/docker-php)](https://img.shields.io/github/license/austral-project/docker-php)
-[![Docker Image Version (tag latest semver)](https://img.shields.io/docker/v/australproject/php/8.0)](https://img.shields.io/docker/v/australproject/php/8.0)
+[![Docker Image Version (tag latest semver)](https://img.shields.io/docker/v/australproject/php/7.4)](https://img.shields.io/docker/v/australproject/php/7.4)
 [![Docker Automated build](https://img.shields.io/docker/automated/australproject/php)](https://img.shields.io/docker/automated/australproject/php)
 [![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/australproject/php)](https://img.shields.io/docker/cloud/build/australproject/php)
 [![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/australproject/php)](https://img.shields.io/docker/image-size/australproject/php)
@@ -10,7 +10,7 @@ Base image Alpine 3.15: [Docker Hub](https://hub.docker.com/r/australproject/alp
 
 ## Versions
 
-* PHP: 8.0.18
+* PHP: 7.4.33
 * Node: 16.14.2
 * NPM: 8.1.3
 * Squoosh-cli: 0.7.2
@@ -26,7 +26,7 @@ The image runs as root **or** as any UID/GID, for example with Docker Swarm:
 ```yaml
 services:
   php:
-    image: australproject/php:8.0
+    image: australproject/php:7.4
     user: "3001:3001"
 ```
 
@@ -35,7 +35,7 @@ The configuration is rendered at start-up into `/tmp/php` (writable by any user)
 Quick test:
 
 ```bash
-docker run --rm -u 3001:3001 -e SCRIPT_AUTO=0 australproject/php:8.0 php -i | grep -E "Loaded Configuration|post_max_size"
+docker run --rm -u 3001:3001 -e SCRIPT_AUTO=0 australproject/php:7.4 php -i | grep -E "Loaded Configuration|post_max_size"
 ```
 
 ## Environment variables
@@ -136,7 +136,7 @@ Supercronic is included and writes job output to stdout/stderr, so it appears in
 ```yaml
 services:
   cron:
-    image: australproject/php:8.0
+    image: australproject/php:7.4
     command: supercronic /etc/crontab
     environment:
       - SCRIPT_AUTO=0

@@ -4,7 +4,7 @@
 # (writable by anyone) and can be overridden from /overrides.
 set -eu
 
-PHP_VERSION="${PHP_VERSION:-8}"
+PHP_VERSION="${PHP_VERSION:-7}"
 TEMPLATE_DIR="${TEMPLATE_DIR:-/usr/local/share/php-templates}"
 PHP_RUN_DIR="${PHP_RUN_DIR:-/tmp/php}"
 OVERRIDES_DIR="${OVERRIDES_DIR:-/overrides}"
