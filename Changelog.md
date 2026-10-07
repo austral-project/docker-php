@@ -1,8 +1,11 @@
 Changelog
 =========
 
-### Version PHP 8.4 (2026-10-06)
+### Version PHP 8.4 (2026-10-07)
+* Add env vars `CREATE_LOG_DIR` and `CREATE_CACHE_DIR` (`1`/`true` to enable)
+* Update start-up: `docker-log/php` and `var/cache` are no longer created by default (set `CREATE_LOG_DIR=1` / `CREATE_CACHE_DIR=1` to restore the previous behaviour)
 
+### Version PHP 8.4 (2026-10-06)
 **Non-root support**
 * Add support for any UID/GID (e.g. Swarm `user: "3001:3001"`); the container no longer needs root
 * Add rendering of the configuration at start-up into `/tmp/php` (`PHPRC`, `PHP_INI_SCAN_DIR`), writable by any user
