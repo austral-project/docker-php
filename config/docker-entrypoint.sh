@@ -14,6 +14,9 @@ SCRIPT_AUTO="${SCRIPT_AUTO:-1}"
 APP_ENV="${APP_ENV:-prod}"
 APP_DEBUG="${APP_DEBUG:-false}"
 XDEBUG="${XDEBUG:-0}"
+# Project directories: not created by default (set to 1 to create them)
+CREATE_LOG_DIR="${CREATE_LOG_DIR:-0}"
+CREATE_CACHE_DIR="${CREATE_CACHE_DIR:-0}"
 
 IS_ROOT=0
 [ "$(id -u)" = "0" ] && IS_ROOT=1
@@ -114,8 +117,8 @@ prepare_dir() {
   [ "$IS_ROOT" = "1" ] && chown -R www-data:www-data "$1"
   return 0
 }
-prepare_dir "$WEBSITE_DIR/docker-log/php"
-prepare_dir "$WEBSITE_DIR/var/cache"
+case "${CREATE_LOG_DIR}" in 1|true) prepare_dir "$WEBSITE_DIR/docker-log/php" ;; esac
+case "${CREATE_CACHE_DIR}" in 1|true) prepare_dir "$WEBSITE_DIR/var/cache" ;; esac
 [ "$PHP_SESSION_SAVE_PATH" = "/tmp" ] || case "$PHP_SESSION_SAVE_PATH" in /*) prepare_dir "$PHP_SESSION_SAVE_PATH" ;; esac
 
 # ---------- Xdebug (compiled in the image, enabled on demand) ----------

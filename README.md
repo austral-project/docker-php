@@ -54,6 +54,8 @@ docker run --rm -u 3001:3001 -e SCRIPT_AUTO=0 australproject/php:5.6 php -i | gr
 | `APP_DEBUG` | `false` | `true` or `false`; `true` enables `display_errors` and `E_ALL`, and disables OPcache |
 | `XDEBUG` | `0` | `1` loads Xdebug 2.x (remote debug on port 9000) |
 | `SCRIPT_AUTO` | `1` | `1` runs `script-auto/run.sh` if it exists. Set `0` on cron and secondary services |
+| `CREATE_LOG_DIR` | `0` | `1`/`true` creates `docker-log/php` in the website directory at start-up. Not created by default |
+| `CREATE_CACHE_DIR` | `0` | `1`/`true` creates `var/cache` in the website directory at start-up. Not created by default |
 
 **PHP (`php.ini`)**
 
