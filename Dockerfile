@@ -60,6 +60,7 @@ RUN apk add --update --no-cache php82 \
   php82-pdo_pgsql \
   php82-pgsql \
   php82-pdo_mysql\
+  php82-mysqli \
   php82-pcntl \
   php82-exif \
   postgresql16-client \
