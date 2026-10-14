@@ -58,6 +58,7 @@ RUN apk add --update --no-cache php8 \
   php8-pdo_pgsql \
   php8-pgsql \
   php8-pdo_mysql\
+  php8-mysqli \
   php8-pcntl \
   php8-exif \
   nodejs \
