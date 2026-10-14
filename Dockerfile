@@ -60,6 +60,7 @@ RUN apk add --update --no-cache \
     php${PHP_VERSION}-sqlite3 \
     php${PHP_VERSION}-simplexml \
     php${PHP_VERSION}-xsl \
+    php${PHP_VERSION}-calendar \
     postgresql16-client \
     mysql-client \
     bash \
