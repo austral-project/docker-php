@@ -65,6 +65,7 @@ RUN apk add --update --no-cache php81 \
   php81-mysqli \
   php81-pcntl \
   php81-exif \
+  php81-calendar \
   postgresql15-client \
   mysql-client \
   php81-xdebug \
