@@ -58,6 +58,7 @@ RUN apk add --update --no-cache php7 \
   php7-pdo_pgsql \
   php7-pgsql \
   php7-pdo_mysql\
+  php7-mysqli \
   php7-pcntl \
   php7-exif \
   nodejs \
