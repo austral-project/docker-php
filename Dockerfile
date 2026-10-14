@@ -63,6 +63,7 @@ RUN apk add --update --no-cache php82 \
   php82-mysqli \
   php82-pcntl \
   php82-exif \
+  php82-calendar \
   postgresql16-client \
   mysql-client \
   nodejs \
