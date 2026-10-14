@@ -31,6 +31,7 @@ RUN apk add --update --no-cache \
     php${PHP_VERSION}-json \
     php${PHP_VERSION}-pdo \
     php${PHP_VERSION}-pdo_mysql \
+    php${PHP_VERSION}-mysqli \
     php${PHP_VERSION}-pdo_pgsql \
     php${PHP_VERSION}-pgsql \
     php${PHP_VERSION}-gd \
