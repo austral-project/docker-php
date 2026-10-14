@@ -62,6 +62,7 @@ RUN apk add --update --no-cache php81 \
   php81-pdo_pgsql \
   php81-pgsql \
   php81-pdo_mysql\
+  php81-mysqli \
   php81-pcntl \
   php81-exif \
   postgresql15-client \
