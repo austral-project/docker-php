@@ -62,6 +62,7 @@ RUN apk add --update --no-cache \
     php${PHP_VERSION}-posix \
     php${PHP_VERSION}-phar \
     php${PHP_VERSION}-imap \
+    php${PHP_VERSION}-calendar \
     imagemagick \
     libgomp \
     postgresql-client \
