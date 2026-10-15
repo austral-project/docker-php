@@ -62,6 +62,7 @@ RUN apk add --update --no-cache php7 \
   php7-pcntl \
   php7-exif \
   php7-calendar \
+  php7-soap \
   nodejs \
   mysql-client \
   npm \
