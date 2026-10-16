@@ -33,6 +33,7 @@ RUN apk add --update --no-cache php8 \
   php8-json \
   php8-curl \
   php8-sodium \
+  php8-soap \
   php8-fpm \
   php8-gd \
   php8-gmp \
