@@ -19,7 +19,7 @@ RUN apk add --no-cache curl \
     && mkdir /src && cd /src \
     && curl -fsSL https://pecl.php.net/get/oauth-2.0.9.tgz -o oauth.tgz
 
-FROM australproject/alpine:3.20
+FROM australproject/alpine:3.22
 LABEL maintainer="Matthieu Beurel <matthieu@austral.dev>"
 
 ENV PHP_VERSION=82
