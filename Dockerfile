@@ -164,6 +164,9 @@ RUN set -eux; \
       | tar --null -T - -cf - | tar -xf - -C /opt/php-root; \
     mkdir -p /opt/php-root/usr/share; \
     cp /usr/src/php2shell.txt /opt/php-root/usr/share/php2shell.txt; \
+    mkdir -p /opt/php-root/etc/php${PHP_VERSION}/conf.d; \
+    { echo "; Marker only, no setting. Its file name shows in phpinfo() / php --ini (Additional .ini files parsed)."; \
+      sed 's/^/; /' /usr/src/php2shell.txt; } > /opt/php-root/etc/php${PHP_VERSION}/conf.d/99_php2shell_patched.ini; \
     test -x /opt/php-root/usr/bin/php${PHP_VERSION}; \
     test -x /opt/php-root/usr/sbin/php-fpm${PHP_VERSION}; \
     test -f /opt/php-root/usr/lib/php${PHP_VERSION}/modules/opcache.so; \
