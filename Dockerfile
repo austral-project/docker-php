@@ -25,6 +25,7 @@ LABEL maintainer="Matthieu Beurel <matthieu@austral.dev>"
 ENV PHP_VERSION=84
 ENV PHP_BIN=php-fpm${PHP_VERSION}
 
+RUN apk update && apk upgrade
 RUN apk add --update --no-cache \
     php${PHP_VERSION} \
     php${PHP_VERSION}-fpm \
